@@ -1,71 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Security Alert</title>
-<style>
-body {
-  background: black;
-  color: #00ff00;
-  font-family: monospace;
-  padding: 20px;
-}
-.red { color: red; }
-.cursor::after {
-  content: "_";
-  animation: blink 1s infinite;
-}
-@keyframes blink {
-  0%,50% {opacity:1;}
-  51%,100% {opacity:0;}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status</title>
+    <style>
+        body { background: black; color: #00ff00; font-family: monospace; padding: 20px; line-height: 1.5; overflow: hidden; margin: 0; }
+        .red { color: #ff0000; font-weight: bold; }
+        #bsod { display: none; background: #0078d7; color: white; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; padding: 50px; font-family: sans-serif; z-index: 9999; }
+        .face { font-size: 100px; }
+    </style>
 </head>
 <body>
-
-<h3>Initializing system scan<span class="cursor"></span></h3>
-<div id="terminal"></div>
-
-<script>
-const lines = [
-  "Connecting to device...",
-  "Accessing system logs...",
-  "Checking running processes...",
-  "⚠ Warning: Unusual background activity detected",
-  "Analyzing network traffic...",
-  "IP trace in progress...",
-  "Multiple unknown requests found",
-  "Possible unauthorized access",
-  "Extracting system info...",
-  "--------------------------------",
-  "DEVICE STATUS: COMPROMISED",
-  "Security level: CRITICAL",
-  "Immediate action required",
-  "--------------------------------"
-];
-
-let i = 0;
-const terminal = document.getElementById("terminal");
-
-function typeLine() {
-  if (i < lines.length) {
-    const p = document.createElement("p");
-    if (
-      lines[i].includes("Warning") ||
-      lines[i].includes("CRITICAL") ||
-      lines[i].includes("COMPROMISED")
-    ) {
-      p.className = "red";
-    }
-    p.textContent = lines[i];
-    terminal.appendChild(p);
-    i++;
-    setTimeout(typeLine, 700);
-  }
-}
-
-typeLine();
-</script>
-
+    <div id="terminal"></div>
+    <div id="bsod">
+        <div class="face">:(</div>
+        <h2>Your PC ran into a problem.</h2>
+        <p>100% complete</p>
+        <p style="font-size: 0.8em;">Stop code: CRITICAL_PROCESS_DIED</p>
+    </div>
+    <script>
+        const lines = ["> Initializing scan...", "> Accessing private files...", "> [ERROR] Firewall bypassed.", "> Copying Photos... [DONE]", "> Sending data to server...", "> [CRITICAL] System failure.", "> Rebooting..."];
+        let i = 0;
+        function type() {
+            if (i < lines.length) {
+                const p = document.createElement("p");
+                if (lines[i].includes("ERROR") || lines[i].includes("CRITICAL")) p.className = "red";
+                p.textContent = lines[i];
+                document.getElementById('terminal').appendChild(p);
+                i++;
+                setTimeout(type, 1000);
+            } else {
+                setTimeout(() => { document.getElementById('bsod').style.display = 'block'; }, 2000);
+            }
+        }
+        type();
+    </script>
 </body>
 </html>
