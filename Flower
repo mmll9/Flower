@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Critical Update</title>
+    <style>
+        body {
+            background: black;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            line-height: 1.5;
+            overflow: hidden;
+            margin: 0;
+        }
+        .red { color: #ff0000; font-weight: bold; }
+        #terminal { white-space: pre-wrap; }
+        
+        /* شاشة زرقاء وهمية */
+        #bsod {
+            display: none;
+            background: #0078d7;
+            color: white;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            padding: 50px;
+            font-family: sans-serif;
+            z-index: 9999;
+        }
+        .face { font-size: 100px; }
+    </style>
+</head>
+<body>
+
+    <div id="terminal"></div>
+    <div id="bsod">
+        <div class="face">:(</div>
+        <h2>Your PC ran into a problem and needs to restart.</h2>
+        <p>We're just collecting some error info, and then we'll restart for you.</p>
+        <p>100% complete</p>
+        <br>
+        <p style="font-size: 0.8em;">For more information about this issue and possible fixes, visit https://www.windows.com/stopcode</p>
+        <p style="font-size: 0.8em;">Stop code: CRITICAL_PROCESS_DIED</p>
+    </div>
+
+    <script>
+        const lines = [
+            "> Initializing security bypass...",
+            "> IP Address Found: 192.168.1.1",
+            "> Accessing Root Directory...",
+            "> [ERROR] Firewall overridden.",
+            "> Copying sensitive data to server...",
+            "> Photos... [DONE]",
+            "> Contacts... [DONE]",
+            "> Messages... [DONE]",
+            "> [CRITICAL] System kernel corrupted.",
+            "> Deleting System32...",
+            "> Rebooting to apply changes..."
+        ];
+
+        let i = 0;
+        const terminal = document.getElementById('terminal');
+
+        function typeLine() {
+            if (i < lines.length) {
+                const p = document.createElement("p");
+                if (lines[i].includes("ERROR") || lines[i].includes("CRITICAL")) {
+                    p.className = "red";
+                }
+                p.textContent = lines[i];
+                terminal.appendChild(p);
+                i++;
+                window.scrollTo(0, document.body.scrollHeight);
+                setTimeout(typeLine, 900);
+            } else {
+                // تفعيل الشاشة الزرقاء بعد انتهاء الكود بـ 2 ثانية
+                setTimeout(() => {
+                    document.getElementById('bsod').style.display = 'block';
+                    document.body.style.cursor = 'none'; // إخفاء الماوس لزيادة الرعب
+                }, 2000);
+            }
+        }
+        setTimeout(typeLine, 1000);
+    </script>
+</body>
+</html>
